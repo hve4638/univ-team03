@@ -1,13 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <wish.h>
 
 int main() {
-    const char** buffer;
-    int capacity = 0;
-    int length;
+    char* buffer = NULL;
+    size_t capacity = 0;
 
     while(1) {
-        length = getline(buffer, &capacity, stdin);
-
-        
+        printf("wish> ");
+        getline(&buffer, &capacity, stdin);
+        printf("input: %s", buffer);
     }
 }
