@@ -10,3 +10,7 @@ fork(), exec(), wait()/waitpid() 에 대해 찾아보기
 cd : chdir()
 exit : 
 path : 검색경로 추가
+
+
+문서
+https://docs.google.com/document/d/1txBHkeJaT-zmunpuZTdI68bXfcKaGPjHWIe-uk5FtFs/edit?usp=sharing
