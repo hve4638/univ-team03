@@ -11,8 +11,8 @@ int main() {
         printf("wish> ");
         getline(&input, &capacity, stdin);
 
-        size_t length;
         CMDArray cmd;
-        length = splitCommand(cmd, input);
+        size_t capa = 0;
+        size_t length = splitCommand(input, cmd, &capa);
     }
 }
