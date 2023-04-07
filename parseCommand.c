@@ -1,27 +1,27 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "wish.h"
 
-static int getBlankCount(CMD input);
-int splitCommand(CMD input, CMDArray output, size_t *capatity) {
-    int count = getBlankCount(input);
-    CMDArray cmdArray = malloc(sizeof(CMDArray) * count);
 
-    CMD position = input;
-    for(int i = 0; input[i] != '\0'; i++) {
-      if (input[i] == ' ') {
-         input[i] = 0;
-      }
-   }
-   return count;
-}
+/*
+0. 상태 (cmd, arg)
+1. 순회하며 하나씩 확인
+2. cmd상태 : 단어가 있는지 확인
+3. arg상태 : 
+*/
 
-int getBlankCount(CMD input) {
-    int count = 0;
-    for(int i = 0; input[i] != '\0'; i++) {
-      if(input[i] == ' ') {
-         count++;
+CommandNode* parseCommand(char** array, size_t arraySize, size_t* outputLength) {
+   CommandNode* firstNode = NULL;
+   CommandNode* node = firstNode;
+   
+   int parellelWordCount = 0;
+   int index = 0;
+
+   for(int i = 0; i<outputLength; i++) {
+      if (strcmp(array[i], "&") == 0) parellelWordCount++;
+      else if (strcmp(array[i], ">") == 0) {
+
       }
+
+
    }
-   return count;
 }

@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "wish.h"
 
 int main() {
@@ -11,8 +8,20 @@ int main() {
         printf("wish> ");
         getline(&input, &capacity, stdin);
 
-        CMDArray cmd;
-        size_t capa = 0;
-        size_t length = splitCommand(input, cmd, &capa);
+        CMDArray array;
+        size_t length = splitCommand(input, &array);
+
+        for(size_t i = 0; i < length; i++) {
+            printf("%s\n", array[i]);
+        }
+        
+        free(input); input = NULL;
+        free(array); array = NULL;
     }
+}
+
+void error() {
+    char error_message[30] = "An error has occurred\n";
+
+    write(stderr, error_message, strlen(error_message));
 }
