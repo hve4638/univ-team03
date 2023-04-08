@@ -1,9 +1,21 @@
 #include "wish.h"
 
+// 초기화 필요
+const char* currentDirectory = "/home/";
+const char** wishPATH;
+
 int main() {
+    const char* tmppath[16] = { "/bin", "/usr/bin" };
+    wishPATH = tmppath;
     CMD input = NULL;
     size_t capacity = 0;
-
+    
+    const char** p = wishPATH;
+    while(*p != '\0') {
+        printf("%s\n", *p);
+        p++;
+    }
+    exit(0);
     while(1) {
         printf("wish> ");
         getline(&input, &capacity, stdin);

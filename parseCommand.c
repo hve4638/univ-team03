@@ -16,7 +16,7 @@ CommandNode* parseCommand(char** array, size_t arraySize, size_t* outputLength) 
    int parellelWordCount = 0;
    int index = 0;
 
-   for(int i = 0; i<outputLength; i++) {
+   for(int i = 0; i < arraySize; i++) {
       if (strcmp(array[i], "&") == 0) parellelWordCount++;
       else if (strcmp(array[i], ">") == 0) {
 
