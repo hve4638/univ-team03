@@ -26,6 +26,8 @@ size_t splitCommand(char* input, char*** output) {
             splitted[index++] = pInput+1;
          }
          *pInput = '\0';
+      } else if (*pInput == 10) {
+         *pInput = '\0';
       }
    }
    

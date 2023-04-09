@@ -5,6 +5,7 @@
 #define CMD char*
 #define CMDArray char**
 
+#define FF() fflush(stdout)
 typedef struct {
 /*
     cmd : 명령어 (경로가 포함되지 않는다)
@@ -25,6 +26,7 @@ typedef struct {
     cmd.redirectTo = "file.txt";
     로 처리됨
 */
+
 
 typedef struct CommandNode CommandNode;
 // 이해안되면 LinkedList 찾아보기
@@ -87,6 +89,9 @@ void runBuiltInCommand(Command*);
 size_t splitCommand(char*, char***);
 
 
-CommandNode* parseCommand(char**, size_t, size_t*);
+CommandNode* parseCommand(char**, size_t);
 
-void error();
+void freeCommandNode(CommandNode*);
+
+void wish(FILE*);
+void Error();

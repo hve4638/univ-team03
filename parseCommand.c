@@ -25,7 +25,7 @@ static Command* parseOneCommand(char*** pCmd, char** pCmdEnd) {
    return cmd;
 }
 
-CommandNode* parseCommand(char** array, size_t arraySize, size_t* outputLength) {
+CommandNode* parseCommand(char** array, size_t arraySize) {
    CommandNode initNode;
    CommandNode* lastNode = &initNode;
    CommandNode* node = NULL;
@@ -50,20 +50,10 @@ CommandNode* parseCommand(char** array, size_t arraySize, size_t* outputLength) 
          }
       } else {
          node = malloc(sizeof(CommandNode));
+         node->command = parseOneCommand(&pCmd, pCmdEnd);
+
          lastNode->next = node;
          lastNode = node;
-
-         Command* cmd = parseOneCommand(&pCmd, pCmdEnd);
-         node->command = cmd;
-         
-         printf("cmd: '%s' ", cmd->cmd);
-         printf("argc: %ld\n", cmd->argc);
-         printf("argv: ");
-         for (size_t i = 0; i<cmd->argc; i++) {
-            printf("%s, ", cmd->args[i]);
-         }
-         printf("\n");
-
       }
    }
 

@@ -1,51 +1,62 @@
 #include "wish.h"
 
-// 초기화 필요
-const char* currentDirectory = "/home/";
 const char** wishPATH;
+size_t wishPATHCount;
 
-int main() {
-    const char* tmppath[16] = { "/bin", "/usr/bin" };
+static void Run(char*);
+static void RunInteractive();
+static void RunBatch(FILE*);
+
+void wish(FILE* file) {
+    const char* tmppath[1024] = { "/bin", };
     wishPATH = tmppath;
-    char* input = NULL;
+    wishPATHCount = 1;
+
+    if (file == stdin) RunInteractive();
+    else RunBatch(file);
+}
+void Error() {
+    char error_message[30] = "An error has occurred\n";
+    fprintf(stderr, "%s", error_message);
+}
+
+void RunBatch(FILE* input) {
+    char* rawCmd = NULL;
     size_t capacity = 0;
 
-    input = strdup("echo hello");
-
-    char** array;
-    size_t length = splitCommand(input, &array);
-
-    size_t *outputL = NULL;
-    CommandNode* node = parseCommand(array, length, outputL);
-    printf("Result\n");
-    while(node != NULL) {
-        printf("CMD\n");
-        printf(" - name : %s\n", node->command->cmd);
-        printf(" - args : %ld\n", node->command->argc);
-        printf(" - redirectTo : %s\n", node->command->redirectTo);
-        node = node->next;
-    }
-    runCommand(node);
-
-    exit(0);
     while(1) {
-        printf("wish> ");
-        getline(&input, &capacity, stdin);
+        if (getline(&rawCmd, &capacity, input) == -1) break;
 
-        CMDArray array;
-        size_t length = splitCommand(input, &array);
+        Run(rawCmd);
 
-        for(size_t i = 0; i < length; i++) {
-            printf("%s\n", array[i]);
-        }
-        
-        free(input); input = NULL;
-        free(array); array = NULL;
+        free(rawCmd);
+        rawCmd = NULL;
     }
 }
 
-void error() {
-    char error_message[30] = "An error has occurred\n";
-    fprintf(stderr, "%s", error_message);
-    //write(stderr, error_message, strlen(error_message));
+void RunInteractive() {
+    char* rawCmd = NULL;
+    size_t capacity = 0;
+
+    while(1) {
+        printf("wish> ");
+        getline(&rawCmd, &capacity, stdin);
+
+        Run(rawCmd);
+
+        free(rawCmd);
+        rawCmd = NULL;
+    }
+}
+
+void Run(char* rawCmd) {
+    char** splitted = NULL;
+    size_t length = splitCommand(rawCmd, &splitted);
+    CommandNode* node = parseCommand(splitted, length);
+
+    runCommand(node);
+    
+    freeCommandNode(node);
+    free(splitted);
+    splitted = NULL;
 }
