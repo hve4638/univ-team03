@@ -7,14 +7,26 @@ const char** wishPATH;
 int main() {
     const char* tmppath[16] = { "/bin", "/usr/bin" };
     wishPATH = tmppath;
-    CMD input = NULL;
+    char* input = NULL;
     size_t capacity = 0;
-    
-    const char** p = wishPATH;
-    while(*p != '\0') {
-        printf("%s\n", *p);
-        p++;
+
+    input = strdup("echo hello");
+
+    char** array;
+    size_t length = splitCommand(input, &array);
+
+    size_t *outputL = NULL;
+    CommandNode* node = parseCommand(array, length, outputL);
+    printf("Result\n");
+    while(node != NULL) {
+        printf("CMD\n");
+        printf(" - name : %s\n", node->command->cmd);
+        printf(" - args : %ld\n", node->command->argc);
+        printf(" - redirectTo : %s\n", node->command->redirectTo);
+        node = node->next;
     }
+    runCommand(node);
+
     exit(0);
     while(1) {
         printf("wish> ");
@@ -34,6 +46,6 @@ int main() {
 
 void error() {
     char error_message[30] = "An error has occurred\n";
-
-    write(stderr, error_message, strlen(error_message));
+    fprintf(stderr, "%s", error_message);
+    //write(stderr, error_message, strlen(error_message));
 }

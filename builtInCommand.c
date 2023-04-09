@@ -13,6 +13,8 @@ static void Exit(Command* command) {
 }
 
 int isBuiltInCommand(Command* command) {
+    return 0;
+
     const char* cmd = command->cmd;
 
     if (strcmp(cmd, "cd") == 0) {

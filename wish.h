@@ -14,7 +14,7 @@ typedef struct {
 */
     const char* cmd;
     const char** args;
-    const size_t argc;
+    size_t argc;
     const char* redirectTo;
 } Command;
 /* 프롬프트에 'ls > file.txt' 가 입력되면
@@ -82,7 +82,11 @@ int isBuiltInCommand(Command*);
 void runBuiltInCommand(Command*);
 
 
+// 공백 단위로 문자열을 자르고 공백을 '\0'로 대체함
+// 리터럴 문자열을 넣으면 안됨
 size_t splitCommand(char*, char***);
+
+
 CommandNode* parseCommand(char**, size_t, size_t*);
 
 void error();
