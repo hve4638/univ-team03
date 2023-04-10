@@ -8,10 +8,10 @@ static void RunInteractive();
 static void RunBatch(FILE*);
 
 void wish(FILE* file) {
-    const char* tmppath[1024] = { strdup("/bin"), };
+    const char* tmppath[1024] = { strdup("/bin"), strdup("/bin/usr"), };
     wishPATH = tmppath;
     wishPATHCount = 1;
-
+    
     if (file == stdin) RunInteractive();
     else RunBatch(file);
 

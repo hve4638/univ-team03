@@ -18,14 +18,14 @@ void runCommand(CommandNode *commands)
         { // 외부 프로그램일 경우
             const char **p = wishPATH;
             char path[4096];
-
+            
             while (*p != NULL)
             {
-                snprintf(path, sizeof(path), "%s/%s", *p, cmd->args[0]);
+                snprintf(path, sizeof(path), "%s/%s", *p, cmd->cmd);
                 if (access(path, X_OK) == 0){   // 디렉토리의 실행 권한 여부를 확인
                 break;
                 }
-            p++;
+                p++;
             }
             if (*p == NULL)
             { // 경로에서 명령어를 찾지 못했을 경우
