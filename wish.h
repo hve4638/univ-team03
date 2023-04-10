@@ -5,7 +5,6 @@
 #define CMD char*
 #define CMDArray char**
 
-#define FF() fflush(stdout)
 typedef struct {
 /*
     cmd : 명령어 (경로가 포함되지 않는다)
@@ -42,6 +41,7 @@ struct CommandNode {
     wishPATH 내에 저장되는 포맷은 '/bin', '/usr/bin' 같은 식으로 저장됨. 끝에 '/'가 붙어있지 않음
 */
 extern const char** wishPATH;
+extern size_t wishPATHCount;
 /*
     사용 예시:
         int index = 0;
@@ -84,13 +84,8 @@ int isBuiltInCommand(Command*);
 void runBuiltInCommand(Command*);
 
 
-// 공백 단위로 문자열을 자르고 공백을 '\0'로 대체함
-// 리터럴 문자열을 넣으면 안됨
 size_t splitCommand(char*, char***);
-
-
 CommandNode* parseCommand(char**, size_t);
-
 void freeCommandNode(CommandNode*);
 
 void wish(FILE*);

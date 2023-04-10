@@ -1,8 +1,13 @@
 #include "wish.h"
 
 void freeCommandNode(CommandNode* node) {
-    return;
-    while(node != NULL) {
+    CommandNode* next;
 
+    while(node != NULL) {
+        next = node->next;
+        
+        free(node->command);
+        free(node);
+        node = next;
     }
 }
