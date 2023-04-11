@@ -8,11 +8,12 @@ static void RunInteractive();
 static void RunBatch(FILE*);
 
 void wish(FILE* file) {
-    const char* tmppath[1024] = { strdup("/bin"), strdup("/bin/usr"), };
+    const char* tmppath[1024] = { strdup("/bin"), };
     wishPATH = tmppath;
     wishPATHCount = 1;
     if (file == stdin) RunInteractive();
     else RunBatch(file);
+
 
     for(size_t i = 0; i < wishPATHCount; i++) {
         char* p = (char*)wishPATH[i];
@@ -44,7 +45,7 @@ void RunInteractive() {
 
     while(1) {
         printf("wish> ");
-        getline(&rawCmd, &capacity, stdin);
+        if (getline(&rawCmd, &capacity, stdin) == -1) break;
         Run(rawCmd);
         free(rawCmd);
         rawCmd = NULL;
@@ -54,12 +55,15 @@ void RunInteractive() {
 void Run(char* rawCmd) {
     char** splitted = NULL;
     size_t length = splitCommand(rawCmd, &splitted);
-    CommandNode* node = parseCommand(splitted, length);
-    if (node == NULL) {
-        Error();
-    } else {
-        runCommand(node);
-        freeCommandNode(node);
+    
+    if (length != 0) {
+        CommandNode* node = parseCommand(splitted, length);
+        if (node == NULL) {
+            Error();
+        } else {
+            runCommand(node);
+            freeCommandNode(node);
+        }
     }
 
     free(splitted);

@@ -8,8 +8,12 @@ int main(int argc, char** argv) {
     }
     else if (argc == 2) {
         file = fopen(argv[1], "r");
-        if (file == NULL) exit(1);
+        if (file == NULL) {
+            Error();
+            exit(1);
+        }
     } else {
+        Error();
         exit(1);
     }
 

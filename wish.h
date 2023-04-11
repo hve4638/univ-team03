@@ -90,5 +90,6 @@ size_t splitCommand(char*, char***);
 CommandNode* parseCommand(char**, size_t);
 void freeCommandNode(CommandNode*);
 
+void clearWishPATH();
 void wish(FILE*);
 void Error();

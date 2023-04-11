@@ -28,21 +28,18 @@ static Command* parseOneCommand(char*** pCmd, char** pCmdEnd) {
 }
 
 CommandNode* parseCommand(char** array, size_t arraySize) {
-   CommandNode initNode;
-   CommandNode* lastNode = &initNode;
+   CommandNode* initNode = malloc(sizeof(CommandNode));
+   CommandNode* lastNode = initNode;
    CommandNode* node = NULL;
    
-   initNode.next = NULL;
+   initNode->command = NULL;
+   initNode->next = NULL;
 
    char** pCmdBegin = array;
    char** pCmdEnd = array+arraySize;
    for(char** pCmd = pCmdBegin; pCmd < pCmdEnd; pCmd++) {
       if (strIsEquals(*pCmd, "&")) {
-         if (node == NULL) {
-            return NULL;
-         } else {
-            node = NULL;
-         }
+         node = NULL;
       } else if (strIsEquals(*pCmd, ">")) {
          if (node == NULL) return NULL;
          else if (node->command->redirectTo != NULL) return NULL;
@@ -66,5 +63,5 @@ CommandNode* parseCommand(char** array, size_t arraySize) {
       }
    }
 
-   return initNode.next;
+   return initNode;
 }

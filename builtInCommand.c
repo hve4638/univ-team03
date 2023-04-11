@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <errno.h>
 #include "wish.h"
 
 static void CD(Command* command) {
@@ -8,17 +9,27 @@ static void CD(Command* command) {
 
 static void Path(Command* command) {
     size_t size = command->argc;
+    clearWishPATH();
+
+    for(size_t i=0; i<size; i++) {
+        const char* path = command->args[i];
+
+        if (path[0] == '/') {
+            wishPATH[wishPATHCount++] = strdup(path);
+        } else {
+            char* buffer = realpath(path, NULL);
+            wishPATH[wishPATHCount++] = buffer;
+        }
+    }
+}
+
+void clearWishPATH() {
     for(size_t i = 0; i < wishPATHCount; i++) {
         char *p = (char*)wishPATH[i];
         wishPATH[i] = NULL;
         free(p);
     }
-    
     wishPATHCount = 0;
-    for(size_t i=0; i<size; i++) {
-        const char* arg = strdup(command->args[i]);
-        wishPATH[wishPATHCount++] = strdup(arg);
-    }
 }
 
 static void Exit(Command* command) {

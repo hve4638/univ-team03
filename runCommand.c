@@ -16,15 +16,17 @@ static char** makeArgv(char* path, Command* command) {
 
 void runCommand(CommandNode *commands)
 {
+    pid_t childs[1024];
+    size_t childCount = 0;
     pid_t pid;
-    int status;
     while (commands != NULL) {
         Command *cmd = commands->command;
 
-        if (isBuiltInCommand(cmd)) {
+        if (cmd == NULL) {
+
+        } else if (isBuiltInCommand(cmd)) {
             runBuiltInCommand(cmd);
-        }
-        else { // 외부 프로그램일 경우
+        } else { // 외부 프로그램일 경우
             const char **p = wishPATH;
             char path[4096];
             
@@ -73,9 +75,15 @@ void runCommand(CommandNode *commands)
             }
 
             // 부모 프로세서
-            if (waitpid(pid, &status, 0) == -1) {
-                exit(1);
-            }
+            //if (waitpid(pid, &status, 0) == -1) { exit(1); }
+
+            childs[childCount++] = pid;
+        }
+
+        int status;
+        for(size_t i = 0; i < childCount; i++) {
+            pid = childs[i];
+            waitpid(pid, &status, 0);
         }
 
         commands = commands->next;
