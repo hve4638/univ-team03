@@ -14,8 +14,10 @@ typedef struct {
 */
     const char* cmd;
     const char** args;
+    const char** argv;
     size_t argc;
     const char* redirectTo;
+    const char* errRedirectTo;
 } Command;
 /* 프롬프트에 'ls > file.txt' 가 입력되면
     Command cmd;

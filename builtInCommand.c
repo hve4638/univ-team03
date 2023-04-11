@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "wish.h"
 
 static void CD(Command* command) {
@@ -8,8 +9,9 @@ static void CD(Command* command) {
 static void Path(Command* command) {
     size_t size = command->argc;
     for(size_t i = 0; i < wishPATHCount; i++) {
-        free(wishPATH[i]);
+        char *p = (char*)wishPATH[i];
         wishPATH[i] = NULL;
+        free(p);
     }
     
     wishPATHCount = 0;
@@ -17,12 +19,6 @@ static void Path(Command* command) {
         const char* arg = strdup(command->args[i]);
         wishPATH[wishPATHCount++] = strdup(arg);
     }
-    
-    printf("path: ");
-    for(size_t i=0; i<wishPATHCount; i++) {
-        printf("%s ", wishPATH[i]);
-    }
-    printf("\n");
 }
 
 static void Exit(Command* command) {

@@ -15,8 +15,9 @@ void wish(FILE* file) {
     else RunBatch(file);
 
     for(size_t i = 0; i < wishPATHCount; i++) {
-        free(wishPATH[i]);
+        char* p = (char*)wishPATH[i];
         wishPATH[i] = NULL;
+        free(p);
     }
 }
 
@@ -54,9 +55,12 @@ void Run(char* rawCmd) {
     char** splitted = NULL;
     size_t length = splitCommand(rawCmd, &splitted);
     CommandNode* node = parseCommand(splitted, length);
+    if (node == NULL) {
+        Error();
+    } else {
+        runCommand(node);
+        freeCommandNode(node);
+    }
 
-    runCommand(node);
-    freeCommandNode(node);
     free(splitted);
-    splitted = NULL;
 }
