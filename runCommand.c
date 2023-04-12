@@ -71,7 +71,6 @@ void runCommand(CommandNode *commands)
             }
             else if (pid < 0) { // fork() 호출 실패할 경우
                 Error();
-                exit(1);
             }
 
             // 부모 프로세서
@@ -79,13 +78,11 @@ void runCommand(CommandNode *commands)
 
             childs[childCount++] = pid;
         }
-
-        int status;
-        for(size_t i = 0; i < childCount; i++) {
-            pid = childs[i];
-            waitpid(pid, &status, 0);
-        }
-
         commands = commands->next;
+    }
+    int status;
+    for(size_t i = 0; i < childCount; i++) {
+        pid = childs[i];
+        waitpid(pid, &status, 0);
     }
 }

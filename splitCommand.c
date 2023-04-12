@@ -24,6 +24,7 @@ static void freeBuffer() {
 }
 
 static void addToBuffer(char* str) {
+   if (splitIndex+3 >= splitBufferSize) resizeBuffer(splitBufferSize*2);
    splitBuffer[splitIndex++] = str;
 }
 
@@ -46,13 +47,11 @@ size_t splitCommand(char* input, char*** output) {
    initBuffer(128);
 
    int isWord = 0;
-   int index = 0;
    for(char *p = input; *p != '\0'; p++) {
       if (strrp(&p, "2>")) { addToBuffer("2>"); isWord = 0; }
       else if (strrp(&p, ">"))  { addToBuffer(">"); isWord = 0; }
       else if (strrp(&p, "&"))  { addToBuffer("&"); isWord = 0; }
-      else if (strrp(&p, " ")) { isWord = 0; }
-      else if (strrp(&p, "\t") || strrp(&p, "\n")) { }
+      else if (strrp(&p, " ") || strrp(&p, "\t") || strrp(&p, "\n")) { isWord = 0; }
       else if (!isWord) { addToBuffer(p); isWord = 1; }
    }
    *output = splitBuffer;

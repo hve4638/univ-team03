@@ -14,7 +14,6 @@ void wish(FILE* file) {
     if (file == stdin) RunInteractive();
     else RunBatch(file);
 
-
     for(size_t i = 0; i < wishPATHCount; i++) {
         char* p = (char*)wishPATH[i];
         wishPATH[i] = NULL;
